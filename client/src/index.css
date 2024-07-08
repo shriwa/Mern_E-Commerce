@@ -1,0 +1,29 @@
+:root {
+  --button: #ff4141;
+  --button-1: #787878;
+  --button-2: #3539b8;
+  --text: #171717;
+  --text-1: #5c5c5c;
+  --text-2: #3d3d3d;
+  --border: 1px solid #c9c9c9;
+  --border-1: 1px solid #e1dada;
+  --background-1: linear-gradient(0deg, #ffffff 0%, #00ffff65 100%);
+  --background-primary: white;
+  --background-primary-1: #fbfbfb;
+  --background-primary-2: #5c5c5c;
+}
+
+* {
+  margin: 0;
+}
+body {
+  margin: 0;
+  font-family: "poppins";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

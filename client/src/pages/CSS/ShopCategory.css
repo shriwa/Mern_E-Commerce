@@ -1,0 +1,123 @@
+.shop-category {
+  margin-top: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-category-banner {
+  display: block;
+  margin: 30px auto;
+  width: 82%;
+}
+
+.shopCategory-indexSort {
+  display: flex;
+  gap: 700px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shopCategory-sort {
+  padding: 2px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  border: 1px solid #888;
+}
+
+.shopCategory-indexSort p span {
+  font-weight: 600;
+}
+
+.shopCategory-products {
+  margin: 20px 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 30px;
+}
+
+.shopCategory-loadBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto 80px;
+  background: var(--button-1);
+  width: 200px;
+  height: 50px;
+  border-radius: 75px;
+  color: white;
+  font-size: 18px;
+  font-weight: 500in;
+}
+
+@media (max-width: 1280px) {
+  .shopCategory-indexSort {
+    width: 85%;
+    gap: 500px;
+  }
+  .shopCategory-sort {
+    padding: 1px 8px;
+    font-size: 12px;
+  }
+  .shopCategory-indexSort p {
+    font-size: 12px;
+  }
+  .shopCategory-products {
+    width: 90%;
+    row-gap: 20px;
+  }
+  .shopCategory-products .item {
+    margin: auto;
+  }
+  .shopCategory-loadBtn {
+    margin: 50px auto;
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 800px) {
+  .shop-category-banner {
+    width: 95%;
+  }
+  .shopCategory-indexSort {
+    width: 85%;
+    gap: 250px;
+  }
+  .shopCategory-indexSort p {
+    font-size: 10px;
+  }
+  .shopCategory-products {
+    width: 95%;
+    row-gap: 10px;
+  }
+  .shopCategory-loadBtn {
+    margin: 30px auto;
+    width: 150px;
+    height: 40px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 500px) {
+  .shopCategory-indexSort {
+    width: 85%;
+    gap: 150px;
+  }
+  .shopCategory-indexSort p {
+    font-size: 6px;
+  }
+  .shopCategory-products {
+    grid-template-columns: 1fr 1fr;
+  }
+  .shopCategory-loadBtn {
+    margin: 30px auto;
+    width: 150px;
+    height: 40px;
+    font-size: 13px;
+  }
+}
