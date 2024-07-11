@@ -57,6 +57,7 @@ exports.removeProduct = async (req, res) => {
 exports.getAllProducts = async (req, res) => {
   let products = await Product.find({});
   res.send(products);
+  console.log("Products Fetched");
 };
 
 exports.getNewCollections = async (req, res) => {

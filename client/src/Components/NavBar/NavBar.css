@@ -64,6 +64,18 @@
   align-items: center;
   gap: 45px;
 }
+
+.username {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.username p {
+  color: white;
+}
+
 .nav-login-cart button {
   width: 110px;
   height: 40px;
@@ -218,5 +230,9 @@
   }
   .nav-login-cart {
     transform: scale(0.8);
+  }
+
+  .username {
+    display: grid;
   }
 }

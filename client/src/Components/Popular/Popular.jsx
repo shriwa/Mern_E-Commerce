@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./Popular.css";
 import Item from "../Items/Item";
+import { useContext } from "react";
+import { ShopContext } from "../../Context/ShopContext";
 
 const Popular = () => {
   const [product_data, setProduct_data] = useState([]);
+
+  const { all_product } = useContext(ShopContext);
 
   useEffect(() => {
     fetch("http://localhost:4000/products/popularinwomen")

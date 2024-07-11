@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
+import { addProduct, uploadImage } from "../../API/products";
 
 const AddProduct = () => {
   const [image, setImage] = useState(false);
@@ -20,7 +21,7 @@ const AddProduct = () => {
     setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
   };
 
-  const addProduct = async () => {
+  const handleAddProduct = async () => {
     if (
       !productDetails.name ||
       !productDetails.old_price ||
@@ -32,57 +33,23 @@ const AddProduct = () => {
       return;
     }
 
-    console.log(productDetails);
-    let responseData;
-    let product = productDetails;
-
-    let formData = new FormData();
-    formData.append("product", image);
-
     try {
-      const uploadResponse = await fetch(
-        "http://localhost:4000/products/upload",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-          },
-          body: formData,
-        }
-      );
+      // Upload image first
+      const uploadResponse = await uploadImage(image);
 
-      if (uploadResponse.ok) {
-        responseData = await uploadResponse.json();
+      if (uploadResponse.success) {
+        const updatedProductDetails = {
+          ...productDetails,
+          image: uploadResponse.image_url,
+        };
 
-        if (responseData.success) {
-          product.image = responseData.image_url;
-          console.log(product);
+        // Then add product
+        const addProductResponse = await addProduct(updatedProductDetails);
 
-          const addProductResponse = await fetch(
-            "http://localhost:4000/products/addproduct",
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(product),
-            }
-          );
-
-          if (addProductResponse.ok) {
-            const addProductData = await addProductResponse.json();
-
-            if (addProductData.success) {
-              alert("Product created successfully");
-            } else {
-              alert("Product creation failed");
-            }
-          } else {
-            alert("Product creation failed");
-          }
+        if (addProductResponse.success) {
+          alert("Product created successfully");
         } else {
-          alert("Image upload failed");
+          alert("Product creation failed");
         }
       } else {
         alert("Image upload failed");
@@ -156,12 +123,7 @@ const AddProduct = () => {
           hidden
         />
       </div>
-      <button
-        onClick={() => {
-          addProduct();
-        }}
-        className="add-product-btn"
-      >
+      <button onClick={handleAddProduct} className="add-product-btn">
         Add
       </button>
     </div>

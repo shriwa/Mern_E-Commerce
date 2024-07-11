@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./CSS/LoginSignUp.css";
+import { AuthContext } from "../Context/Authcontext";
 
 const LoginSignUp = () => {
   const [state, setState] = useState("Login");
@@ -9,51 +10,27 @@ const LoginSignUp = () => {
     email: "",
   });
 
+  const { login, signup } = useContext(AuthContext);
+
   const changeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const login = async () => {
-    console.log("Login", formData);
-    let responseData;
-    await fetch("http://localhost:4000/users/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => (responseData = data));
-
-    if (responseData.success) {
-      localStorage.setItem("auth_token", responseData.token);
+  const handleLogin = async () => {
+    try {
+      await login(formData.email, formData.password);
       window.location.replace("/");
-    } else {
-      alert(responseData.error);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
-  const signup = async () => {
-    console.log("Signup", formData);
-    let responseData;
-    await fetch("http://localhost:4000/users/signup", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => (responseData = data));
-
-    if (responseData.success) {
-      localStorage.setItem("auth_token", responseData.token);
+  const handleSignup = async () => {
+    try {
+      await signup(formData.name, formData.email, formData.password);
       window.location.replace("/");
-    } else {
-      alert(responseData.error);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -91,7 +68,7 @@ const LoginSignUp = () => {
 
         <button
           onClick={() => {
-            state === "Login" ? login() : signup();
+            state === "Login" ? handleLogin() : handleSignup();
           }}
         >
           Continue

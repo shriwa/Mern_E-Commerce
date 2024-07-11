@@ -31,7 +31,7 @@ exports.signup = async (req, res) => {
     };
     const token = jwt.sign(data, "secret_ecom");
 
-    res.json({ success: true, token });
+    res.json({ success: true, token, email: user.email, name: user.name });
   } catch (error) {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
         };
 
         const token = jwt.sign(data, "secret_ecom");
-        res.json({ success: true, token });
+        res.json({ success: true, token, email: user.email, name: user.name });
       } else {
         res.status(409).json({ success: false, error: "Wrong password" });
       }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { updateProduct } from "../API/products";
 
-const UpdateUser = ({ userData, onUpdateUser }) => {
+const UpdateUser = ({ userData, onUpdateProduct }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
@@ -32,26 +33,13 @@ const UpdateUser = ({ userData, onUpdateUser }) => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to update?")) {
       try {
-        const response = await fetch(
-          `http://localhost:4000/products/updateproduct/${formData.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to update product, Issue with response");
-        }
-        const updatedUser = await response.json();
-        onUpdateUser(updatedUser);
+        const updatedProduct = await updateProduct(formData);
+        onUpdateProduct(updatedProduct);
         toggleModal();
         console.log("Successfully updated");
       } catch (error) {
-        console.error("Failed to update user", error);
-        alert("Failed to update user. Please try again.");
+        console.error("Failed to update product", error);
+        alert("Failed to update product. Please try again.");
       }
     }
   };

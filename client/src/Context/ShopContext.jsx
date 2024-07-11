@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-
+import axios from "axios";
+import API from "../API/index";
 export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
@@ -12,60 +13,88 @@ const getDefaultCart = () => {
 
 const ShopContextProvider = (props) => {
   const [all_product, setAll_product] = useState([]);
+  const [popular_product, setPopular_product] = useState([]);
   const [cartItem, setCartItem] = useState(getDefaultCart());
 
   useEffect(() => {
-    fetch("http://localhost:4000/products/allproducts")
-      .then((res) => res.json())
-      .then((data) => setAll_product(data));
+    const fetchAllProducts = async () => {
+      try {
+        const response = await API.get("/products/allproducts");
+        setAll_product(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-    if (localStorage.getItem("auth_token")) {
-      fetch("http://localhost:4000/getcart", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          auth_token: `${localStorage.getItem("auth_token")}`,
-          "Content-Type": "application/json",
-        },
-        body: "",
-      })
-        .then((res) => res.json())
-        .then((data) => setCartItem(data));
-    }
+    const fetchUserCart = async () => {
+      try {
+        if (localStorage.getItem("auth_token")) {
+          const response = await API.post(
+            "/users/getcart",
+            {},
+            {
+              headers: {
+                Accept: "application/json",
+                auth_token: `${localStorage.getItem("auth_token")}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setCartItem(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user cart:", error);
+      }
+    };
+
+    fetchAllProducts();
+    fetchUserCart();
   }, []);
+
+  // const fetchPopularProducts = async () => {
+  //   try {
+  //     const response = await API.get("/products/allproducts");
+  //     setPopular_product(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //   }
+  // };
 
   const addToCart = (itemId) => {
     setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     if (localStorage.getItem("auth_token")) {
-      fetch("http://localhost:4000/addtocart", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          auth_token: `${localStorage.getItem("auth_token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId: itemId }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+      API.post(
+        "/users/addtocart",
+        { itemId: itemId },
+        {
+          headers: {
+            Accept: "application/json",
+            auth_token: `${localStorage.getItem("auth_token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error("Error adding to cart:", error));
     }
-    // console.log("cart-item", cartItem);
   };
 
   const removeFromCart = (itemId) => {
     setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (localStorage.getItem("auth_token")) {
-      fetch("http://localhost:4000/removefromcart", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          auth_token: `${localStorage.getItem("auth_token")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId: itemId }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+      API.post(
+        "/users/removefromcart",
+        { itemId: itemId },
+        {
+          headers: {
+            Accept: "application/json",
+            auth_token: `${localStorage.getItem("auth_token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error("Error removing from cart:", error));
     }
   };
 

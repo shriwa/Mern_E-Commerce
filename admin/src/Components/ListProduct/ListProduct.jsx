@@ -32,6 +32,7 @@ const ListProduct = () => {
   };
 
   const handleUpdateProduct = (updatedProduct) => {
+    fetchInfo();
     setAllproducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === updatedProduct.id ? updatedProduct : product
@@ -105,7 +106,7 @@ const ListProduct = () => {
                         </button>
                         <UpdateProduct
                           userData={product}
-                          onUpdateUser={handleUpdateProduct}
+                          onUpdateProduct={handleUpdateProduct}
                         />
                       </div>
                     </td>

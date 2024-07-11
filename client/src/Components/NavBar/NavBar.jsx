@@ -2,14 +2,25 @@ import React, { useContext, useRef, useState } from "react";
 import "./NavBar.css";
 import logo from "../Assets/logo_2.png";
 import { IoCartOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 import { IoIosArrowDropdown } from "react-icons/io";
+import { AuthContext } from "../../Context/Authcontext";
 
 const NavBar = () => {
   const [menu, setMenu] = useState("shop");
   const { getTotalCartItems } = useContext(ShopContext);
   const menuRef = useRef();
+
+  const { currentUser, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      logout();
+      navigate("/login");
+    }
+  };
 
   const dropdown_toggle = (e) => {
     menuRef.current.classList.toggle("nav-menu-visible");
@@ -74,17 +85,12 @@ const NavBar = () => {
         </li>
       </ul>
 
-      <div className="username"></div>
       <div className="nav-login-cart">
         {localStorage.getItem("auth_token") ? (
-          <button
-            onClick={() => {
-              localStorage.removeItem("auth_token");
-              window.location.replace("/");
-            }}
-          >
-            Logout
-          </button>
+          <div className="username">
+            <p>{currentUser.name}</p>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
         ) : (
           <Link to="/login">
             <button>
