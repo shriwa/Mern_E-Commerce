@@ -34,8 +34,9 @@
 }
 
 .item img {
-  max-width: 90%;
-  height: auto;
+  object-fit: cover;
+  width: 180px;
+  height: 300px;
   border-radius: 10px;
 }
 
