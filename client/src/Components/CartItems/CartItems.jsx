@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./CartItems.css";
 import { ShopContext } from "../../Context/ShopContext";
 import { IoCloseSharp } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const CartItems = () => {
   const {
@@ -70,7 +71,9 @@ const CartItems = () => {
               <h3>${getTotalCartAmount()}</h3>
             </div>
           </div>
-          <button>Proceed to checkout</button>
+          <Link to="/payment">
+            <button>Proceed to checkout</button>
+          </Link>
         </div>
         <div className="cart-items-promocode">
           <p>If you have promo code , Enter here</p>

@@ -43,9 +43,9 @@ const ProductDisplay = (props) => {
           </div>
         </div>
         <div className="product-display-right-description">
-          Step into elegance with our Striped Flutter Sleeve Peplum Blouse,
-          featuring a stylish overlap collar and chic stripes for a modern,
-          feminine allure.
+          {product.description
+            ? product.description
+            : "Step into elegance with our Striped Flutter Sleeve Peplum Blousefeaturing a stylish overlap collar and chic stripes for a modern,feminine allure."}
         </div>
         <div className="product-display-right-size">
           <h1>Select Size</h1>
@@ -68,7 +68,7 @@ const ProductDisplay = (props) => {
           </div>
         </div>
         <div className="shop-cart">
-          <Link>
+          <Link to="/payment">
             <button className="shop-cart-buy">Buy Now</button>
           </Link>
           <Link to="/cart">
@@ -83,7 +83,7 @@ const ProductDisplay = (props) => {
           </Link>
         </div>
         <p className="product-display-right-categoty">
-          <span>Category : </span>Women, T-Shirt, Crop Top
+          <span>Category : </span> {product.category}
         </p>
         <p className="product-display-right-categoty">
           <span>Tags : </span>Modern, Latest

@@ -5,11 +5,16 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import Item from "../Components/Items/Item";
 
 const ShopCategory = (props) => {
-  const { all_product } = useContext(ShopContext);
+  const { all_product, allProductsError } = useContext(ShopContext);
 
   return (
     <div className="shop-category">
       <img className="shop-category-banner" src={props.banner} alt="" />
+      {allProductsError ? (
+        <div className="error-message">Error: {allProductsError}</div>
+      ) : (
+        ""
+      )}
       <div className="shopCategory-indexSort">
         <p>
           <span>Showing 1-12</span> out of 36 products

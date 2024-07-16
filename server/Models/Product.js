@@ -24,6 +24,9 @@ const productSchema = new mongoose.Schema({
   old_price: {
     type: Number,
   },
+  description: {
+    type: String,
+  },
   date: {
     type: Date,
     default: Date.now(),

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { updateProduct } from "../API/products";
+import { updateProduct, uploadImage } from "../API/products";
+import upload_area from "../assets/upload_area.svg";
 
 const UpdateUser = ({ userData, onUpdateProduct }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,7 +10,11 @@ const UpdateUser = ({ userData, onUpdateProduct }) => {
     category: "",
     old_price: "",
     new_price: "",
+    description: "",
+    image: "",
   });
+
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (userData) {
@@ -29,11 +34,27 @@ const UpdateUser = ({ userData, onUpdateProduct }) => {
     }));
   };
 
+  const imageHandler = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (window.confirm("Are you sure you want to update?")) {
       try {
-        const updatedProduct = await updateProduct(formData);
+        let updatedFormData = { ...formData };
+
+        if (image) {
+          const uploadResponse = await uploadImage(image);
+          if (uploadResponse.success) {
+            updatedFormData.image = uploadResponse.image_url;
+          } else {
+            alert("Image upload failed");
+            return;
+          }
+        }
+
+        const updatedProduct = await updateProduct(updatedFormData);
         onUpdateProduct(updatedProduct);
         toggleModal();
         console.log("Successfully updated");
@@ -130,14 +151,20 @@ const UpdateUser = ({ userData, onUpdateProduct }) => {
                     >
                       Category
                     </label>
-                    <input
+                    <select
                       type="text"
                       name="category"
                       id="category"
                       value={formData.category}
                       onChange={handleChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    />
+                      className="bg-gray-50 border border-gray-300 text-gray-900
+                     text-sm rounded-lg focus:ring-primary-600
+                     focus:border-primary-600 block w-full p-2.5"
+                    >
+                      <option value="women">Women</option>
+                      <option value="men">Men</option>
+                      <option value="kid">Kid</option>
+                    </select>
                   </div>
                   <div>
                     <label
@@ -167,6 +194,38 @@ const UpdateUser = ({ userData, onUpdateProduct }) => {
                       name="new_price"
                       id="new_price"
                       value={formData.new_price}
+                      onChange={handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    />
+                  </div>
+                  <div className="add-product-item-field">
+                    <label htmlFor="file-input">
+                      <img
+                        src={image ? URL.createObjectURL(image) : upload_area}
+                        alt=""
+                        className="add-product-thumnail-img"
+                      />
+                    </label>
+                    <input
+                      onChange={imageHandler}
+                      type="file"
+                      name="image"
+                      id="file-input"
+                      hidden
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Product Description
+                    </label>
+                    <input
+                      type="text"
+                      name="description"
+                      id="description"
+                      value={formData.description}
                       onChange={handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />

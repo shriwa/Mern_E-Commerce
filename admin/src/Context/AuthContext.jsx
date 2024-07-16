@@ -1,5 +1,4 @@
-import React, { createContext, useState } from "react";
-import { useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import API from "../API";
 
 export const AuthContext = createContext();
@@ -19,8 +18,9 @@ export const AuthContextProvider = ({ children }) => {
     return token || null;
   });
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    console.log("Current user updated", currentUser);
     if (currentUser) {
       localStorage.setItem("user", JSON.stringify(currentUser));
     } else {
@@ -29,7 +29,6 @@ export const AuthContextProvider = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log("Token updated", token);
     if (token) {
       localStorage.setItem("utoken", token);
     } else {
@@ -43,28 +42,26 @@ export const AuthContextProvider = ({ children }) => {
         email,
         password,
       });
-      console.log("Login response", data);
       setCurrentUser({ email: data.email, name: data.name });
       setToken(data.token);
+      setError(null);
     } catch (error) {
-      console.log("Login error", error);
+      console.error("Login error", error);
+      setError(error.response ? error.response.data.error : "Login failed");
       throw error;
     }
   };
 
   const logout = () => {
-    console.log("Logging out");
-    // Clear currentUser and token states
     setCurrentUser(null);
     setToken(null);
-    // Remove user and token from local storage
     localStorage.removeItem("user");
     localStorage.removeItem("utoken");
   };
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, setCurrentUser, login, logout }}
+      value={{ currentUser, setCurrentUser, login, logout, error }}
     >
       {children}
     </AuthContext.Provider>

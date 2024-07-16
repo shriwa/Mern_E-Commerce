@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
-import axios from "axios";
 import API from "../API/index";
+
 export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
   let cart = {};
-  for (let index = 0; index < 300 + 1; index++) {
+  for (let index = 0; index < 300; index++) {
     cart[index] = 0;
   }
   return cart;
@@ -14,7 +14,14 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
   const [all_product, setAll_product] = useState([]);
   const [popular_product, setPopular_product] = useState([]);
+  const [newCollection, setNewCollection] = useState([]);
   const [cartItem, setCartItem] = useState(getDefaultCart());
+  const [allProductsError, setAllProductsError] = useState(null);
+  const [userCartError, setUserCartError] = useState(null);
+  const [popularProductsError, setPopularProductsError] = useState(null);
+  const [newCollectionsError, setNewCollectionsError] = useState(null);
+  const [addToCartError, setAddToCartError] = useState(null);
+  const [removeFromCartError, setRemoveFromCartError] = useState(null);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -23,6 +30,7 @@ const ShopContextProvider = (props) => {
         setAll_product(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setAllProductsError("Failed to fetch all products.");
       }
     };
 
@@ -44,6 +52,7 @@ const ShopContextProvider = (props) => {
         }
       } catch (error) {
         console.error("Error fetching user cart:", error);
+        setUserCartError("Failed to fetch user cart.");
       }
     };
 
@@ -51,50 +60,69 @@ const ShopContextProvider = (props) => {
     fetchUserCart();
   }, []);
 
-  // const fetchPopularProducts = async () => {
-  //   try {
-  //     const response = await API.get("/products/allproducts");
-  //     setPopular_product(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
-  const addToCart = (itemId) => {
-    setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    if (localStorage.getItem("auth_token")) {
-      API.post(
-        "/users/addtocart",
-        { itemId: itemId },
-        {
-          headers: {
-            Accept: "application/json",
-            auth_token: `${localStorage.getItem("auth_token")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error("Error adding to cart:", error));
+  const fetchPopularInWomen = async () => {
+    try {
+      const response = await API.get("/products/popularinwomen");
+      setPopular_product(response.data);
+    } catch (error) {
+      console.error("Error fetching popular products:", error);
+      setPopularProductsError("Failed to fetch popular products.");
     }
   };
 
-  const removeFromCart = (itemId) => {
+  const fetchNewCollection = async () => {
+    try {
+      const response = await API.get("/products/newcollections");
+      setNewCollection(response.data);
+    } catch (error) {
+      console.error("Error fetching new collections:", error);
+      setNewCollectionsError("Failed to fetch new collections.");
+    }
+  };
+
+  const addToCart = async (itemId) => {
+    setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    if (localStorage.getItem("auth_token")) {
+      try {
+        const response = await API.post(
+          "/users/addtocart",
+          { itemId },
+          {
+            headers: {
+              Accept: "application/json",
+              auth_token: `${localStorage.getItem("auth_token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        setAddToCartError("Failed to add item to cart.");
+      }
+    }
+  };
+
+  const removeFromCart = async (itemId) => {
     setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (localStorage.getItem("auth_token")) {
-      API.post(
-        "/users/removefromcart",
-        { itemId: itemId },
-        {
-          headers: {
-            Accept: "application/json",
-            auth_token: `${localStorage.getItem("auth_token")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error("Error removing from cart:", error));
+      try {
+        const response = await API.post(
+          "/users/removefromcart",
+          { itemId },
+          {
+            headers: {
+              Accept: "application/json",
+              auth_token: `${localStorage.getItem("auth_token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error removing from cart:", error);
+        setRemoveFromCartError("Failed to remove item from cart.");
+      }
     }
   };
 
@@ -123,11 +151,21 @@ const ShopContextProvider = (props) => {
 
   const contextValue = {
     all_product,
+    popular_product,
+    newCollection,
     cartItem,
+    fetchPopularInWomen,
+    fetchNewCollection,
     addToCart,
     removeFromCart,
     getTotalCartAmount,
     getTotalCartItems,
+    allProductsError,
+    userCartError,
+    popularProductsError,
+    newCollectionsError,
+    addToCartError,
+    removeFromCartError,
   };
 
   return (

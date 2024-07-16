@@ -9,6 +9,7 @@ const LoginSignUp = () => {
     password: "",
     email: "",
   });
+  const [error, setError] = useState("");
 
   const { login, signup } = useContext(AuthContext);
 
@@ -21,7 +22,7 @@ const LoginSignUp = () => {
       await login(formData.email, formData.password);
       window.location.replace("/");
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
 
@@ -30,7 +31,7 @@ const LoginSignUp = () => {
       await signup(formData.name, formData.email, formData.password);
       window.location.replace("/");
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
     }
   };
 
@@ -45,6 +46,7 @@ const LoginSignUp = () => {
               onChange={changeHandler}
               value={formData.username}
               type="text"
+              autoCapitalize="off"
               placeholder="Name"
             />
           ) : (
@@ -56,6 +58,7 @@ const LoginSignUp = () => {
             onChange={changeHandler}
             type="email"
             placeholder="Email"
+            autoCapitalize="off"
           />
           <input
             name="password"
@@ -63,9 +66,10 @@ const LoginSignUp = () => {
             onChange={changeHandler}
             type="password"
             placeholder="Password"
+            autoCapitalize="off"
           />
         </div>
-
+        {error && <div className="text-red-500 mb-5">{error}</div>}
         <button
           onClick={() => {
             state === "Login" ? handleLogin() : handleSignup();

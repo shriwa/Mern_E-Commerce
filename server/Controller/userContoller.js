@@ -62,6 +62,83 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.adminLogin = async (req, res) => {
+  try {
+    let user = await Users.findOne({ email: req.body.email });
+
+    if (!user) {
+      return res.status(409).json({ success: false, error: "Wrong email" });
+    }
+
+    // Check if the role is admin
+    if (user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ success: false, error: "Access Denied: Not an admin" });
+    }
+
+    const passCompare = req.body.password === user.password;
+    if (!passCompare) {
+      return res.status(409).json({ success: false, error: "Wrong password" });
+    }
+
+    const data = {
+      user: {
+        id: user.id,
+        role: "admin",
+      },
+    };
+
+    const token = jwt.sign(data, "secret_ecom");
+    return res.json({
+      success: true,
+      token,
+      email: user.email,
+      name: user.name,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+exports.adminSignup = async (req, res) => {
+  try {
+    let user = await Users.findOne({ email: req.body.email });
+
+    if (user) {
+      return res
+        .status(409)
+        .json({ success: false, error: "Email already exists" });
+    }
+
+    const newUser = new Users({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: "admin",
+    });
+
+    await newUser.save();
+
+    const data = {
+      user: {
+        id: newUser.id,
+        role: "admin",
+      },
+    };
+
+    const token = jwt.sign(data, "secret_ecom");
+    return res.json({
+      success: true,
+      token,
+      email: newUser.email,
+      name: newUser.name,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
 exports.addToCart = async (req, res) => {
   console.log("Item added", req.body.itemId);
   let userData = await Users.findOne({ _id: req.user.id });

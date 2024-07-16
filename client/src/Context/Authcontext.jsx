@@ -53,6 +53,9 @@ export const AuthContextProvider = ({ children }) => {
 
   // Signup
   const signup = async (name, email, password) => {
+    if (!name || !email || !password) {
+      console.log("One of the input field is empty");
+    }
     try {
       const { data } = await API.post("/users/signup", {
         name,

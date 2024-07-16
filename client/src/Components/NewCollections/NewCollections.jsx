@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./NewCollections.css";
 import Item from "../Items/Item";
+import { ShopContext } from "../../Context/ShopContext";
 
 const NewCollections = () => {
-  const [new_collections, setNew_collections] = useState([]);
+  const { newCollection, fetchNewCollection, newCollectionsError } =
+    useContext(ShopContext);
 
   useEffect(() => {
-    fetch("http://localhost:4000/products/newcollections")
-      .then((res) => res.json())
-      .then((data) => setNew_collections(data));
+    fetchNewCollection();
   }, []);
 
   return (
     <div className="newCollections">
       <h1>NEW COLLECTIONS</h1>
       <hr />
-      <div className="collections">
-        {new_collections.map((item, i) => {
-          return (
+      {newCollectionsError ? (
+        <div className="error-message">Error: {newCollectionsError}</div>
+      ) : (
+        <div className="collections">
+          {newCollection.map((item, i) => (
             <Item
               key={i}
               id={item.id}
@@ -26,9 +28,9 @@ const NewCollections = () => {
               new_price={item.new_price}
               old_price={item.old_price}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

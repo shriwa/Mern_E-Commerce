@@ -2,14 +2,16 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import ProtectedRoute from "../Routes/ProtectedRoute";
 import Shop from "../pages/Shop";
 import ShopCategory from "../pages/ShopCategory";
 import Product from "../pages/Product";
 import Cart from "../pages/Cart";
 import LoginSignUp from "../pages/LoginSignUp";
-import men_banner from "../Components/Assets/banner_mens.png";
-import women_banner from "../Components/Assets/banner_women.png";
-import kids_banner from "../Components/Assets/banner_kids.png";
+import men_banner from "../Components/Assets/banner_mens_2";
+import women_banner from "../Components/Assets/banner_women_2";
+import kids_banner from "../Components/Assets/banner_kids_2";
+import Payment from "../pages/Payment";
 
 const Router = createBrowserRouter([
   {
@@ -39,6 +41,10 @@ const Router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/payment",
+        element: <Payment />,
       },
       {
         path: "/login",

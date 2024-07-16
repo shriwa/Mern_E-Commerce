@@ -28,6 +28,7 @@
 @media (max-width: 1280px) {
   .related-products {
     height: 50vh;
+    margin-bottom: 280px;
   }
   .related-products h1 {
     font-size: 40px;

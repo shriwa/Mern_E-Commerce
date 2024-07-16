@@ -13,11 +13,15 @@ const Product = () => {
 
   const product = all_product.find((e) => e.id === Number(productId));
 
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
   return (
     <div className="product">
       <Breadcrumbs product={product} />
       <ProductDisplay product={product} />
-      <DescriptionBox />
+      <DescriptionBox product={product} />
       <RelatedProduct category={product.category} />
     </div>
   );

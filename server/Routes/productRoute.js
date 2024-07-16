@@ -11,7 +11,7 @@ router.get("/newcollections", productController.getNewCollections);
 router.get("/popularinwomen", productController.getPopularInWomen);
 router.post("/upload", upload.single("product"), (req, res) => {
   res.json({
-    success: 1,
+    success: true,
     image_url: `http://localhost:4000/images/${req.file.filename}`,
   });
 });

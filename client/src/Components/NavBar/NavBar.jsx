@@ -51,7 +51,6 @@ const NavBar = () => {
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <p>Shop</p>
           </Link>{" "}
-          {menu === "shop" ? <hr /> : <></>}
         </li>
         <li
           onClick={() => {
@@ -61,7 +60,6 @@ const NavBar = () => {
           <Link to="/mens" style={{ textDecoration: "none", color: "white" }}>
             <p>Men</p>
           </Link>{" "}
-          {menu === "men" ? <hr /> : <></>}
         </li>
         <li
           onClick={() => {
@@ -71,7 +69,6 @@ const NavBar = () => {
           <Link to="/womens" style={{ textDecoration: "none", color: "white" }}>
             <p>women</p>
           </Link>{" "}
-          {menu === "women" ? <hr /> : <></>}
         </li>
         <li
           onClick={() => {
@@ -81,7 +78,6 @@ const NavBar = () => {
           <Link to="/Kids" style={{ textDecoration: "none", color: "white" }}>
             <p>Kids</p>
           </Link>{" "}
-          {menu === "kids" ? <hr /> : <></>}
         </li>
       </ul>
 

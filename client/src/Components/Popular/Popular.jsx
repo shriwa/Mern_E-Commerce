@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import "./Popular.css";
 import Item from "../Items/Item";
-import { useContext } from "react";
 import { ShopContext } from "../../Context/ShopContext";
 
 const Popular = () => {
-  const [product_data, setProduct_data] = useState([]);
-
-  const { all_product } = useContext(ShopContext);
+  const { popular_product, fetchPopularInWomen, popularProductsError } =
+    useContext(ShopContext);
 
   useEffect(() => {
-    fetch("http://localhost:4000/products/popularinwomen")
-      .then((res) => res.json())
-      .then((data) => setProduct_data(data));
+    fetchPopularInWomen();
   }, []);
 
   return (
     <div className="popular">
       <h1>POPULAR IN WOMEN</h1>
       <hr />
-      <div className="popular-item">
-        {product_data.map((item, i) => {
-          return (
+      {popularProductsError ? (
+        <div className="error-message">Error: {popularProductsError}</div>
+      ) : (
+        <div className="popular-item">
+          {popular_product.map((item, i) => (
             <Item
               key={i}
               id={item.id}
@@ -30,9 +28,9 @@ const Popular = () => {
               new_price={item.new_price}
               old_price={item.old_price}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

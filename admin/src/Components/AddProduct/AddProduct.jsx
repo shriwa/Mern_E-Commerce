@@ -11,6 +11,7 @@ const AddProduct = () => {
     category: "",
     new_price: "",
     old_price: "",
+    description: "",
   });
 
   const imageHandler = (e) => {
@@ -27,6 +28,7 @@ const AddProduct = () => {
       !productDetails.old_price ||
       !productDetails.new_price ||
       !productDetails.category ||
+      !productDetails.description ||
       !image
     ) {
       alert("All fields are mandatory. Please fill in all the details.");
@@ -106,6 +108,16 @@ const AddProduct = () => {
           <option value="men">Men</option>
           <option value="kid">Kid</option>
         </select>
+      </div>
+      <div className="add-product-item-field">
+        <p>Product Description</p>
+        <input
+          value={productDetails.description}
+          onChange={changeHandler}
+          type="text"
+          name="description"
+          placeholder="Type here.."
+        />
       </div>
       <div className="add-product-item-field">
         <label htmlFor="file-input">

@@ -21,7 +21,7 @@
 
 .Product-display-main-img {
   height: 450px;
-  width: 356px;
+  width: 400px;
   border-radius: 5px;
 }
 
@@ -127,7 +127,7 @@
 
 @media (max-width: 1280px) {
   .Product-display {
-    margin: 0px 60px;
+    margin: 0px 80px;
   }
   .Product-display-left {
     gap: 10px;
@@ -139,7 +139,7 @@
     height: 120px;
   }
   .Product-display-main-img {
-    width: auto;
+    width: 400px;
     height: 380px;
   }
   .product-display-right {
