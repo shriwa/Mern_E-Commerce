@@ -5,6 +5,7 @@ import Offers from "../Components/Offers/Offers";
 import NewCollections from "../Components/NewCollections/NewCollections";
 import NewsLetter from "../Components/NewsLetter/NewsLetter";
 import Footer from "../Components/Footer/Footer";
+import Stats from "../Components/Stats";
 
 const Shop = () => {
   return (
@@ -13,6 +14,7 @@ const Shop = () => {
       <Popular />
       <Offers />
       <NewCollections />
+      <Stats />
       <NewsLetter />
     </div>
   );

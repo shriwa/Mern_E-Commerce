@@ -43,16 +43,12 @@
 @media (max-width: 1280px) {
   .item {
     width: 220px;
-    padding: 12px;
   }
   .item p {
     font-size: 14px;
   }
   .item img {
-    width: 220px;
-  }
-  .item-price-old {
-    font-size: 18px;
+    height: 300px;
   }
 }
 

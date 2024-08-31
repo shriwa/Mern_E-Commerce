@@ -1,14 +1,13 @@
 import React from "react";
-import "./CSS/Payment.css";
 import card from "../Components/Assets/card.png";
 
 const Payment = () => {
   return (
-    <div class="mt-20">
-      <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+    <div>
+      <section class="bg-white py-8 antialiased  md:py-28">
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
           {/* Details */}
-          <div class="mx-auto max-w-5xl">
+          <div class="mx-auto max-w-5xl mb-5">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               Details
             </h2>
@@ -16,7 +15,7 @@ const Payment = () => {
             <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12">
               <form
                 action="#"
-                class="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:max-w-xl lg:p-8"
+                class="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:max-w-xl lg:p-8"
               >
                 <div class="mb-6 grid grid-cols-2 gap-4">
                   <div class="col-span-2 sm:col-span-1">
