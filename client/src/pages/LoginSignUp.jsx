@@ -98,7 +98,7 @@ const LoginSignUp = () => {
                 setFormData({ email: "", password: "", name: "" });
               }}
             >
-              SignUp
+              Sign Up
             </span>
           </p>
         )}
