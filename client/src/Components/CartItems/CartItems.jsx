@@ -5,13 +5,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const CartItems = () => {
-  const {
-    getTotalCartAmount,
-    all_product,
-    cartItem,
-    addToCart,
-    removeFromCart,
-  } = useContext(ShopContext);
+  const { getTotalCartAmount, all_product, cartItem, removeFromCart } =
+    useContext(ShopContext);
 
   return (
     <div className="cart-items">
